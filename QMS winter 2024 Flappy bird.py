@@ -1,24 +1,44 @@
-#Author: Norman
-#Date Created: Jan 24, 2024
-#QMS - Flappy Bird Game
+import pygame, random
 
-import pygame
-
-print(pygame.init())
+pygame.init( )
+screen = pygame.display.set_mode((800,600))
 clock = pygame.time.Clock()
-                                                                    #(width, height)
-screen = pygame.display.set_mode((500,700))
 
-birdy = 300
+bird_y = 300
+yspeed = 0
+canJump = True
 
-gameRunning = True
-while gameRunning == True:
-    for event in pygame.event.get():
-        print(event)
+pipe_x = 800
+pipe_y = random.randint(350, 550)
 
-    birdy = birdy + 10
+gamerunning = True
+while gamerunning == True:
+  
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      gamerunning = False
 
-    screen.fill((204, 255, 255)) #sky blue
-    pygame.draw.rect(screen, (123,234,0), (250,birdy,50,50))
-    pygame.display.update()#render
-    clock.tick(50)
+    if pygame.key.get_pressed()[pygame.K_SPACE] and canJump == True:
+      yspeed = -25
+      canJump = False
+
+    elif not pygame.key.get_pressed()[pygame.K_SPACE]:
+      canJump = True
+
+  bird_y = bird_y + yspeed
+  yspeed += 1.65
+
+  if pipe_x < -100:
+    pipe_x = 900
+    pipe_y = random.randint(350,550)
+
+  pipe_x -= 8
+  
+  screen.fill((204, 230, 255))
+  pygame.draw.rect(screen, (0,0,0), (300, bird_y, 40, 40))
+  pygame.draw.rect(screen, (0,255,0), (pipe_x, pipe_y, 100, 600))
+  pygame.display.update()
+  clock.tick(25)
+
+pygame.quit()
+
