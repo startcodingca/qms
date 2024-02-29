@@ -8,9 +8,16 @@ bird_x = 300
 bird_y = 300
 yspeed = 0
 canJump = True
+birdscore = 0
 
 pipe_x = 800
 pipe_y = random.randint(350, 550)
+
+scorefontstyle = pygame.font.Font('freesansbold.ttf', 50)
+scoretext = scorefontstyle.render("Score: " + str(birdscore), True, (0,0,0), None)
+
+gameoverfontstyle = pygame.font.Font('freesansbold.ttf', 150)
+gameovertext = gameoverfontstyle.render("GAME OVER", True, (255,0,0), (0,0,0))
 
 gamerunning = True
 while gamerunning == True:
@@ -30,6 +37,8 @@ while gamerunning == True:
   yspeed += 1.65
 
   if pipe_x < -100:
+    birdscore = birdscore + 1
+    scoretext = scorefontstyle.render("Score: " + str(birdscore), True, (0,0,0), None)
     pipe_x = 900
     pipe_y = random.randint(350,550)
 
@@ -38,6 +47,8 @@ while gamerunning == True:
   #====COLLISIONS====
 
   if bird_y > 600:
+    screen.blit(gameovertext, (0, 200))
+    pygame.display.update()
     gamerunning = False
     time.sleep(2)
 
@@ -53,6 +64,7 @@ while gamerunning == True:
   pygame.draw.rect(screen, (0,0,0), (bird_x, bird_y, 40, 40))
   pygame.draw.rect(screen, (0,255,0), (pipe_x, pipe_y, 100, 600))
   pygame.draw.rect(screen, (0,255,0), (pipe_x, pipe_y - 250 - 600, 100, 600))
+  screen.blit(scoretext, (300,0))
   pygame.display.update()
   clock.tick(25)
 
